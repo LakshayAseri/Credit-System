@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+
+# Logs
+*.log
+
+# WhatsApp Web.js session
+.wwebjs_auth/
+.wwebjs_cache/

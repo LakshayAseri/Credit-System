@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F3F8FC;
+    color: #243B53;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
