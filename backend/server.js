@@ -55,21 +55,7 @@ app.get("/test", (req, res) => {
     });
 });
 
-app.get("/test-reminders", async (req, res) => {
-    try {
-        await processDueReminders();
 
-        res.status(200).json({
-            message: "Reminder processing completed"
-        });
-    } catch (error) {
-        console.error("Reminder test error:", error);
-
-        res.status(500).json({
-            message: error.message
-        });
-    }
-});
 
 // Port
 const PORT = process.env.PORT || 5000;
