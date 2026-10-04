@@ -10,6 +10,7 @@ const client = new Client({
     }),
     puppeteer: {
         headless: true,
+        protocolTimeout: 120000,
         args: [
             "--no-sandbox",
             "--disable-setuid-sandbox"
@@ -43,7 +44,10 @@ client.on("disconnected", (reason) => {
 async function sendWhatsAppMessage(phoneNumber, message) {
     try {
         console.log("Checking WhatsApp number:", phoneNumber);
-
+        if (!client.info) {
+            console.log("WhatsApp client is not ready yet.");
+            return false;
+        }
         const numberId = await client.getNumberId(phoneNumber);
 
         if (!numberId) {
