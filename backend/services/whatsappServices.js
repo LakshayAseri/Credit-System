@@ -44,29 +44,24 @@ client.on("disconnected", (reason) => {
 async function sendWhatsAppMessage(phoneNumber, message) {
     try {
         console.log("Checking WhatsApp number:", phoneNumber);
+
         if (!client.info) {
             console.log("WhatsApp client is not ready yet.");
             return false;
         }
-        const numberId = await client.getNumberId(phoneNumber);
 
-        if (!numberId) {
-            console.log("This number is not registered on WhatsApp.");
-            return false;
-        }
+        const chatId = `${phoneNumber}@c.us`;
 
-        console.log("WhatsApp ID found:", numberId._serialized);
+        console.log("Sending WhatsApp message to:", chatId);
 
-        await client.sendMessage(numberId._serialized, message);
+        await client.sendMessage(chatId, message);
 
         console.log("WhatsApp message sent successfully.");
 
         return true;
-
     } catch (error) {
         console.error("WhatsApp send error:");
         console.error(error);
-
         return false;
     }
 }
