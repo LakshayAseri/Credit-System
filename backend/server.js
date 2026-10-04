@@ -16,7 +16,7 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 const { processDueReminders } = require("./services/reminderService");
-
+const { getQRCodeBuffer } = require("./services/whatsappServices");
 // Start WhatsApp service
 require("./services/whatsappServices");
 
@@ -49,6 +49,22 @@ app.get("/test", (req, res) => {
     res.status(200).json({
         message: "Credit System backend is running"
     });
+});
+
+app.get("/whatsapp-qr", async (req, res) => {
+    try {
+        const qrBuffer = await getQRCodeBuffer();
+
+        if (!qrBuffer) {
+            return res.status(404).send("WhatsApp QR code is not available.");
+        }
+
+        res.set("Content-Type", "image/png");
+        res.send(qrBuffer);
+    } catch (error) {
+        console.error("QR image error:", error);
+        res.status(500).send("Failed to generate WhatsApp QR.");
+    }
 });
 
 

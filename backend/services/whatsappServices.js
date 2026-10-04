@@ -1,5 +1,8 @@
 const { Client, LocalAuth } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
+const QRCode = require("qrcode");
+
+let latestQR = null;
 
 const client = new Client({
     authStrategy: new LocalAuth({
@@ -15,7 +18,9 @@ const client = new Client({
 });
 
 client.on("qr", (qr) => {
-    console.log("\nScan this QR code with whatsapp : \n");
+    latestQR = qr;
+
+    console.log("\nScan this QR code with WhatsApp:\n");
     qrcode.generate(qr, { small: true });
 });
 
@@ -64,7 +69,20 @@ async function sendWhatsAppMessage(phoneNumber, message) {
 
 client.initialize();
 
+async function getQRCodeBuffer() {
+    if (!latestQR) {
+        return null;
+    }
+
+    return await QRCode.toBuffer(latestQR, {
+        type: "png",
+        width: 500,
+        margin: 2
+    });
+}
+
 module.exports = {
     client,
-    sendWhatsAppMessage
+    sendWhatsAppMessage,
+    getQRCodeBuffer
 };
