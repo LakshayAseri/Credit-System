@@ -16,7 +16,10 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 const { processDueReminders } = require("./services/reminderService");
-const { getQRCodeBuffer } = require("./services/whatsappServices");
+const {
+    getQRCodeBuffer,
+    sendWhatsAppMessage
+} = require("./services/whatsappServices");
 // Start WhatsApp service
 require("./services/whatsappServices");
 
@@ -49,6 +52,31 @@ app.get("/test", (req, res) => {
     res.status(200).json({
         message: "Credit System backend is running"
     });
+});
+
+app.get("/test-whatsapp", async (req, res) => {
+    try {
+        const success = await sendWhatsAppMessage(
+            "916377535547",
+            "Hello! This is a test message from the deployed Credit System."
+        );
+
+        if (success) {
+            return res.status(200).json({
+                message: "WhatsApp test message sent successfully"
+            });
+        }
+
+        res.status(500).json({
+            message: "WhatsApp test message failed"
+        });
+    } catch (error) {
+        console.error("WhatsApp test error:", error);
+
+        res.status(500).json({
+            message: error.message
+        });
+    }
 });
 
 app.get("/whatsapp-qr", async (req, res) => {
